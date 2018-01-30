@@ -1,0 +1,3 @@
+[submodule "iOS-UILibraryDemo"]
+	path = iOS-UILibraryDemo
+	url = https://github.com/DJI-Mobile-SDK-Tutorials/iOS-UILibraryDemo.git
