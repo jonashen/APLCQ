@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		383F1A11206323E2009A8EE7 /* ExecutiveControlMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383F1A10206323E2009A8EE7 /* ExecutiveControlMaster.swift */; };
 		4596F12C203E48A30081368D /* DCMaster.m in Sources */ = {isa = PBXBuildFile; fileRef = 4596F12B203E48A30081368D /* DCMaster.m */; };
 		81D69A701AC36780F16EE7C2 /* libPods-UILibraryDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB62439E5D943AE7AE28A5FD /* libPods-UILibraryDemo.a */; };
 		A40B6D7F1EA4DC810069B96C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A40B6D7E1EA4DC810069B96C /* Assets.xcassets */; };
@@ -51,6 +52,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		383F1A10206323E2009A8EE7 /* ExecutiveControlMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutiveControlMaster.swift; sourceTree = "<group>"; };
 		4596F12A203E48A30081368D /* DCMaster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DCMaster.h; sourceTree = "<group>"; };
 		4596F12B203E48A30081368D /* DCMaster.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DCMaster.m; sourceTree = "<group>"; };
 		8933F4AC5CDFFD001B8C8C2C /* Pods-UILibraryDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UILibraryDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UILibraryDemo/Pods-UILibraryDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -100,6 +102,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		383F1A0F206323BA009A8EE7 /* ExecutiveControl */ = {
+			isa = PBXGroup;
+			children = (
+				383F1A10206323E2009A8EE7 /* ExecutiveControlMaster.swift */,
+			);
+			name = ExecutiveControl;
+			sourceTree = "<group>";
+		};
 		4596F129203E48330081368D /* DroneCommunication */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +140,7 @@
 		A48847C71EA2697F00CE5843 /* UILibraryDemo */ = {
 			isa = PBXGroup;
 			children = (
+				383F1A0F206323BA009A8EE7 /* ExecutiveControl */,
 				4596F129203E48330081368D /* DroneCommunication */,
 				A48847CB1EA2697F00CE5843 /* AppDelegate.h */,
 				A48847CC1EA2697F00CE5843 /* AppDelegate.m */,
@@ -311,6 +322,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4596F12C203E48A30081368D /* DCMaster.m in Sources */,
+				383F1A11206323E2009A8EE7 /* ExecutiveControlMaster.swift in Sources */,
 				A48847CD1EA2697F00CE5843 /* AppDelegate.m in Sources */,
 				A48847F11EA39BB200CE5843 /* DefaultLayoutViewController.m in Sources */,
 				A48847CA1EA2697F00CE5843 /* main.m in Sources */,
