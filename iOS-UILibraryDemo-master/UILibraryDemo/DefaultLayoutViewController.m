@@ -18,9 +18,19 @@
 {
     [super viewDidLoad];
     
-    //Please enter your App Key in the info.plist file.
     [DJISDKManager registerAppWithDelegate:self];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self registerApp];
+}
+
+- (void)registerApp
+{
+    [DJISDKManager registerAppWithDelegate:self];
 }
 
 - (void)showAlertViewWithMessage:(NSString *)message
@@ -45,6 +55,14 @@
     {
         [self showAlertViewWithMessage:[NSString stringWithFormat:@"Registration Error:%@", error]];
     }
+}
+
+- (void)showAlertViewWithTitle:(NSString *)title withMessage:(NSString *)message
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)productConnected:(DJIBaseProduct *)product
