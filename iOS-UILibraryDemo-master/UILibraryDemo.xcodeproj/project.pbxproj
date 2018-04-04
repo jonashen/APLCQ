@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2807100D207593430048B971 /* SharedDJIData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2807100B207593430048B971 /* SharedDJIData.m */; };
 		383F1A11206323E2009A8EE7 /* ExecutiveControlMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383F1A10206323E2009A8EE7 /* ExecutiveControlMaster.swift */; };
 		4596F12C203E48A30081368D /* DCMaster.m in Sources */ = {isa = PBXBuildFile; fileRef = 4596F12B203E48A30081368D /* DCMaster.m */; };
 		81D69A701AC36780F16EE7C2 /* libPods-UILibraryDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB62439E5D943AE7AE28A5FD /* libPods-UILibraryDemo.a */; };
@@ -52,6 +53,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2807100B207593430048B971 /* SharedDJIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedDJIData.m; sourceTree = "<group>"; };
+		2807100C207593430048B971 /* SharedDJIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedDJIData.h; sourceTree = "<group>"; };
 		383F1A10206323E2009A8EE7 /* ExecutiveControlMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutiveControlMaster.swift; sourceTree = "<group>"; };
 		4596F12A203E48A30081368D /* DCMaster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DCMaster.h; sourceTree = "<group>"; };
 		4596F12B203E48A30081368D /* DCMaster.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DCMaster.m; sourceTree = "<group>"; };
@@ -102,6 +105,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2807100A207593200048B971 /* FlightControl */ = {
+			isa = PBXGroup;
+			children = (
+				2807100C207593430048B971 /* SharedDJIData.h */,
+				2807100B207593430048B971 /* SharedDJIData.m */,
+			);
+			path = FlightControl;
+			sourceTree = "<group>";
+		};
 		383F1A0F206323BA009A8EE7 /* ExecutiveControl */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +152,7 @@
 		A48847C71EA2697F00CE5843 /* UILibraryDemo */ = {
 			isa = PBXGroup;
 			children = (
+				2807100A207593200048B971 /* FlightControl */,
 				383F1A0F206323BA009A8EE7 /* ExecutiveControl */,
 				4596F129203E48330081368D /* DroneCommunication */,
 				A48847CB1EA2697F00CE5843 /* AppDelegate.h */,
@@ -321,6 +334,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2807100D207593430048B971 /* SharedDJIData.m in Sources */,
 				4596F12C203E48A30081368D /* DCMaster.m in Sources */,
 				383F1A11206323E2009A8EE7 /* ExecutiveControlMaster.swift in Sources */,
 				A48847CD1EA2697F00CE5843 /* AppDelegate.m in Sources */,
