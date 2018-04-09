@@ -15,7 +15,7 @@
 #import <DJISDK/DJIGimbalBaseTypes.h>
 #import <DJISDK/DJIFlightControllerState.h>
 // Declaring the new class "SharedDJIData" with PRIVATE variables
-@interface SharedDJIData:NSObject<DJISDKManagerDelegate, DJIFlightControllerDelegate> {
+@interface DroneControl:NSObject<DJISDKManagerDelegate, DJIFlightControllerDelegate, DJICameraDelegate> {
     /* Lock to prevent race conditions */
     NSLock *_lock;
     

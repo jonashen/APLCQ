@@ -1,8 +1,8 @@
 //
-//  SharedData.m
+//  DroneControl.m
 //  UILibraryDemo
 //
-//  Created by Jonathon Shen on 1/31/18.
+//  Created by Jonathon Shen and Christine Chen on 1/31/18.
 //  Copyright © 2018 DJI. All rights reserved.
 // https://developer.dji.com/api-reference/android-api/Components/FlightController/DJIFlightController_DJIFlightControllerCurrectState.html
 // https://developer.dji.com/iframe/mobile-sdk-doc/android/reference/dji/sdk/FlightController/DJIFlightController.html
@@ -11,14 +11,15 @@
 
 
 #import <Foundation/Foundation.h>
-#import "SharedDJIData.h"
+#import "DroneControl.h"
 
-@implementation SharedDJIData {
+@implementation DroneControl {
     BOOL userControl;
     DJIBaseProduct* product;
     DJIFlightController* flightController;
     DJIGimbal* gimbal;
     NSString* state;
+    DJICamera *camera;
 }
 
 // Ability to do sharedDJIData.roll = 1.0;
@@ -66,7 +67,7 @@
     return true;
 }
 
-#pragma mark - User Control
+#pragma mark - Enable/Disable User Control
 
 -(void) disableUserControl {
     userControl = false;
@@ -84,6 +85,30 @@
             NSLog(@"Disable VirtualStickControlMode Failed");
         }
     }];
+}
+
+#pragma mark Send Virtual Stick commands
+
+- (void) executeVirtualStick : (float) roll : (float) pitch : (float) yaw : (float) throttle
+{
+    float mRoll = roll;
+    float mPitch = pitch;
+    float mYaw = yaw;
+    float mThrottle = throttle;
+    
+    DJIVirtualStickFlightControlData ctrlData = {0};
+    ctrlData.pitch = mPitch;
+    ctrlData.roll = mRoll;
+    ctrlData.yaw = mYaw;
+    ctrlData.verticalThrottle = mThrottle;
+    
+    flightController.isVirtualStickAdvancedModeEnabled = YES;
+    
+    if (flightController && flightController.isVirtualStickControlModeAvailable) {
+        [flightController sendVirtualStickFlightControlData:ctrlData withCompletion:^(NSError * _Nullable error) {
+            NSLog(@"Send FlightControl Data Failed %@", error.description);
+        }];
+    }
 }
 
 -(void) land {
@@ -268,15 +293,13 @@
         [flightController setRollPitchCoordinateSystem:DJIVirtualStickFlightCoordinateSystemBody];
         flightController.verticalControlMode = DJIVirtualStickVerticalControlModeVelocity;
         
-//        [flightController setVirtualStickModeEnabled:YES withCompletion:^(NSError * _Nullable error) {
-//            if (error) {
-//                NSLog(@“Enable VirtualStickControlMode Failed”);
-//            }
-//        }];
     } else {
         NSLog(@"Can't find flight controller");
     }
     gimbal = [self fetchGimbal];
+    camera = [self fetchCamera];
+    
+    [self enableUserControl];
 }
 
 #pragma mark Gimbal methods
@@ -434,56 +457,6 @@
     }];
 }
 
-#pragma mark - VirtualStick methods
-
--(void) enableVirtualStick {
-    DJIFlightController *flightController = [self fetchFlightController];
-    [flightController setYawControlMode:DJIVirtualStickYawControlModeAngle];
-    [flightController setRollPitchCoordinateSystem:DJIVirtualStickFlightCoordinateSystemGround];
-    [flightController setVirtualStickModeEnabled:YES withCompletion:^(NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"Enable VirtualStickControlMode Failed");
-        }
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self executeVirtualStickControl];
-        });
-    }];
-}
-
-- (void) executeVirtualStickControl
-{
-    float mRoll = 0;
-    float mPitch = 0;
-    float mYaw = 0;
-    float mThrottle = 0;
-    
-    DJIVirtualStickFlightControlData ctrlData = {0};
-    ctrlData.pitch = mPitch;
-    ctrlData.roll = mRoll;
-    ctrlData.yaw = mYaw;
-    ctrlData.verticalThrottle = mThrottle;
-    
-    DJIFlightController* fc = [self fetchFlightController];
-    fc.isVirtualStickAdvancedModeEnabled = YES;
-    
-    if (fc && fc.isVirtualStickControlModeAvailable) {
-        [fc sendVirtualStickFlightControlData:ctrlData withCompletion:^(NSError * _Nullable error) {
-            NSLog(@"Send FlightControl Data Failed %@", error.description);
-        }];
-    }
-}
-
--(void) disableVirtualStick {
-    DJIFlightController *flightController = [self fetchFlightController];
-    [flightController setVirtualStickModeEnabled:NO withCompletion:^(NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"Disable VirtualStickControlMode Failed");
-            DJIFlightController *flightController = [self fetchFlightController];
-            [flightController setVirtualStickModeEnabled:NO withCompletion:nil];
-        }
-    }];
-}
-
 #pragma mark - DJIFlightControllerDelegate Methods
 
 -(void) flightController:(DJIFlightController *_Nonnull)fc didUpdateState:(DJIFlightControllerState *_Nonnull)state {
@@ -511,10 +484,10 @@
                     [NSNumber numberWithFloat:state.velocityY],
                     [NSNumber numberWithFloat:state.velocityZ], nil];
     
-    if(vc != NULL) {
-//        [vc test];
-        [vc displayData:fcd:vel];
-    }
+//    if(vc != NULL) {
+////        [vc test];
+//        [vc displayData:fcd:vel];
+//    }
 }
 
 
@@ -532,7 +505,7 @@
 //        [[DJISDKManager videoFeeder].primaryVideoFeed addListener:self withQueue:nil];
 //        [[VideoPreviewer instance] start];
     }
-    [vc showAlertViewWithMessage:message];
+//    [vc showAlertViewWithMessage:message];
 //    [self showAlertViewWithTitle:@"Register App" withMessage:message];
     
 }
@@ -540,15 +513,15 @@
 - (void)productConnected:(DJIBaseProduct *)product
 {
     if (product) {
-        if(vc != NULL) {
-            [vc test];
-        }
-//        DJICamera* camera = [self fetchCamera];
-//        if (camera != nil) {
-//            camera.delegate = self;
-//            [camera.playbackManager setDelegate:self];
+//        if(vc != NULL) {
+//            [vc test];
 //        }
-        DJIFlightController *flightController = [self fetchFlightController];
+        camera = [self fetchCamera];
+        if (camera != nil) {
+            camera.delegate = self;
+//            [camera.playbackManager setDelegate:self];
+        }
+        flightController = [self fetchFlightController];
         if (flightController) {
             flightController.delegate = self;
             [flightController setDelegate:self];
