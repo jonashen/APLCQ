@@ -13,7 +13,13 @@
 #import <Foundation/Foundation.h>
 #import "SharedDJIData.h"
 
-@implementation SharedDJIData
+@implementation SharedDJIData {
+    BOOL userControl;
+    DJIBaseProduct* product;
+    DJIFlightController* flightController;
+    DJIGimbal* gimbal;
+    NSString* state;
+}
 
 // Ability to do sharedDJIData.roll = 1.0;
 @synthesize roll, pitch, yaw, throttle;
@@ -25,8 +31,70 @@
     [DJISDKManager registerAppWithDelegate:self];
 
     self.aircraftLocation = kCLLocationCoordinate2DInvalid;
+    userControl = true;
+    state = @"FF";
+    
+    [self setup];
 
     return self;
+}
+
+-(BOOL) stateChange: (NSString*)newState{
+    if([newState isEqualToString:@"FF"]) {
+        [self enableUserControl];
+    } else if([newState isEqualToString:@"TD"]) {
+        
+    } else if([newState isEqualToString:@"TS"]) {
+        
+    }
+//    else if([newState isEqualToString:@"DR"]) {
+//        [self positionCameraDown];
+//    }
+//    else if([newState isEqualToString:@"DRC"]) {
+//        //hovers
+//        // stop
+//    }
+    else if([newState isEqualToString:@"Landing"]) {
+        [self disableUserControl];
+        [self land];
+    } else if([newState isEqualToString:@"Landed"]) {
+        [self enableUserControl];
+    } else {
+        return false;
+    }
+    state = newState;
+    return true;
+}
+
+#pragma mark - User Control
+
+-(void) disableUserControl {
+    userControl = false;
+    [flightController setVirtualStickModeEnabled:YES withCompletion:^(NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Enable VirtualStickControlMode Failed");
+        }
+    }];
+}
+
+-(void) enableUserControl {
+    userControl = true;
+    [flightController setVirtualStickModeEnabled:NO withCompletion:^(NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Disable VirtualStickControlMode Failed");
+        }
+    }];
+}
+
+-(void) land {
+    [flightController startLandingWithCompletion:^(NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Landing error");
+        } else {
+            NSLog(@"Landing complete");
+        }
+        [self enableUserControl];
+    }];
 }
 
 #pragma mark - FCD methods
@@ -190,22 +258,26 @@
     return nil;
 }
 
-//- (void)setupFlightController {
-//    DJIFlightController *flightController = [self fetchFlightController];
-//    if (flightController) {
-//        flightController.delegate = self;
-//        [flightController setDelegate:self];
-//        [flightController setRollPitchControlMode:DJIVirtualStickRollPitchControlModeAngle];
-//        [flightController setYawControlMode:DJIVirtualStickYawControlModeAngle];
-//        [flightController setRollPitchCoordinateSystem:DJIVirtualStickFlightCoordinateSystemBody];
-//
+- (void) setup {
+    product = [DJISDKManager product];
+    flightController = [self fetchFlightController];
+    if(flightController) {
+        [flightController setDelegate:self];
+        [flightController setRollPitchControlMode:DJIVirtualStickRollPitchControlModeAngle];
+        [flightController setYawControlMode:DJIVirtualStickYawControlModeAngle];
+        [flightController setRollPitchCoordinateSystem:DJIVirtualStickFlightCoordinateSystemBody];
+        flightController.verticalControlMode = DJIVirtualStickVerticalControlModeVelocity;
+        
 //        [flightController setVirtualStickModeEnabled:YES withCompletion:^(NSError * _Nullable error) {
 //            if (error) {
-//                NSLog(@"Enable VirtualStickControlMode Failed");
+//                NSLog(@“Enable VirtualStickControlMode Failed”);
 //            }
 //        }];
-//    }
-//}
+    } else {
+        NSLog(@"Can't find flight controller");
+    }
+    gimbal = [self fetchGimbal];
+}
 
 #pragma mark Gimbal methods
 
@@ -232,8 +304,35 @@
     }];
 }
 
+//-(void) positionCameraDown {
+//    // radians or degrees?
+//    DJIGimbalRotation *rotationAbsolute = [DJIGimbalRotation gimbalRotationWithPitchValue:@(90)
+//                                                                                rollValue:nil
+//                                                                                 yawValue:nil
+//                                                                                     time:10
+//                                                                                     mode:DJIGimbalRotationModeAbsoluteAngle];
+//    DJIGimbalRotation *rotationSpeed = [DJIGimbalRotation gimbalRotationWithPitchValue:nil
+//                                                                             rollValue:nil
+//                                                                              yawValue:nil
+//                                                                                  time:5
+//                                                                                  mode:DJIGimbalRotationModeSpeed];
+//    [gimbal rotateWithRotation:rotationSpeed completion:^(NSError * _Nullable error) {
+//        if (error) {
+//            NSLog(@"Rotate Gimbal Failed: %@", [NSString stringWithFormat:@"%@", error.description]);
+//        }
+//    }];
+//}
+
+//-(void) raiseCameraForLanding {
+//    [gimbal resetWithCompletion:^(NSError * _Nullable error) {
+//        if (error) {
+//            NSLog(@"Reset Gimbal Failed: %@", [NSString stringWithFormat:@"%@", error.description]);
+//        }
+//    }];
+//}
+
 -(void)rotateGimbalDown {
-    DJIGimbal *gimbal = [self fetchGimbal];
+//    DJIGimbal *gimbal = [self fetchGimbal];
     [gimbal resetWithCompletion:^(NSError * _Nullable error) {
         if (error) {
             NSLog(@"ResetGimbal Failed: %@", [NSString stringWithFormat:@"%@", error.description]);
