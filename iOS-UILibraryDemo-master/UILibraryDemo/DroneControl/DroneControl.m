@@ -580,6 +580,24 @@
     }
 }
 
+-(void) moveDroneWithOffset:(float) offset {
+    DJIFlightController *flightController = [self fetchFlightController];
+    
+    DJIVirtualStickFlightControlData vsFlightCtrlData;
+    vsFlightCtrlData.verticalThrottle = 0;
+    vsFlightCtrlData.roll = 0;
+    vsFlightCtrlData.yaw = 0;
+    vsFlightCtrlData.pitch = offset;
+
+    flightController.isVirtualStickAdvancedModeEnabled = YES;
+    
+    [flightController sendVirtualStickFlightControlData:vsFlightCtrlData withCompletion:^(NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Send FlightControl Data Failed %@", error.description);
+        }
+    }];
+}
+
 @end
 
 // [_elements addObject:element] = _elements.addObject(element)
