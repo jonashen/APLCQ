@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <DJIUILibrary/DJIUILibrary.h>
+#import "DefaultLayoutViewController.h"
 
-@interface DCMaster : NSObject <DJIFlightControllerDelegate>
+@interface DCMaster : NSObject <DJIFlightControllerDelegate> {
+    @public DefaultLayoutViewController *vc;
+}
 @end

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2807100D207593430048B971 /* SharedDJIData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2807100B207593430048B971 /* SharedDJIData.m */; };
+		2807100D207593430048B971 /* DroneControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2807100B207593430048B971 /* DroneControl.m */; };
 		383F1A11206323E2009A8EE7 /* ExecutiveControlMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383F1A10206323E2009A8EE7 /* ExecutiveControlMaster.swift */; };
 		4596F12C203E48A30081368D /* DCMaster.m in Sources */ = {isa = PBXBuildFile; fileRef = 4596F12B203E48A30081368D /* DCMaster.m */; };
 		81D69A701AC36780F16EE7C2 /* libPods-UILibraryDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BB62439E5D943AE7AE28A5FD /* libPods-UILibraryDemo.a */; };
@@ -53,8 +53,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2807100B207593430048B971 /* SharedDJIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedDJIData.m; sourceTree = "<group>"; };
-		2807100C207593430048B971 /* SharedDJIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedDJIData.h; sourceTree = "<group>"; };
+		2807100B207593430048B971 /* DroneControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DroneControl.m; sourceTree = "<group>"; };
+		2807100C207593430048B971 /* DroneControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DroneControl.h; sourceTree = "<group>"; };
 		383F1A10206323E2009A8EE7 /* ExecutiveControlMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutiveControlMaster.swift; sourceTree = "<group>"; };
 		4596F12A203E48A30081368D /* DCMaster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DCMaster.h; sourceTree = "<group>"; };
 		4596F12B203E48A30081368D /* DCMaster.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DCMaster.m; sourceTree = "<group>"; };
@@ -105,13 +105,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2807100A207593200048B971 /* FlightControl */ = {
+		2807100A207593200048B971 /* DroneControl */ = {
 			isa = PBXGroup;
 			children = (
-				2807100C207593430048B971 /* SharedDJIData.h */,
-				2807100B207593430048B971 /* SharedDJIData.m */,
+				2807100C207593430048B971 /* DroneControl.h */,
+				2807100B207593430048B971 /* DroneControl.m */,
 			);
-			path = FlightControl;
+			path = DroneControl;
 			sourceTree = "<group>";
 		};
 		383F1A0F206323BA009A8EE7 /* ExecutiveControl */ = {
@@ -152,7 +152,7 @@
 		A48847C71EA2697F00CE5843 /* UILibraryDemo */ = {
 			isa = PBXGroup;
 			children = (
-				2807100A207593200048B971 /* FlightControl */,
+				2807100A207593200048B971 /* DroneControl */,
 				383F1A0F206323BA009A8EE7 /* ExecutiveControl */,
 				4596F129203E48330081368D /* DroneCommunication */,
 				A48847CB1EA2697F00CE5843 /* AppDelegate.h */,
@@ -220,7 +220,7 @@
 				TargetAttributes = {
 					A48847C41EA2697F00CE5843 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = WDB6VTXPS7;
+						DevelopmentTeam = U8849KWVAR;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
@@ -334,7 +334,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2807100D207593430048B971 /* SharedDJIData.m in Sources */,
+				2807100D207593430048B971 /* DroneControl.m in Sources */,
 				4596F12C203E48A30081368D /* DCMaster.m in Sources */,
 				383F1A11206323E2009A8EE7 /* ExecutiveControlMaster.swift in Sources */,
 				A48847CD1EA2697F00CE5843 /* AppDelegate.m in Sources */,
@@ -488,7 +488,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = WDB6VTXPS7;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U8849KWVAR;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -497,9 +499,10 @@
 				INFOPLIST_FILE = UILibraryDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "capstone-ui-sample";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.capstone-ui-sample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "UILibraryDemo/UILibraryDemo-Bridging-Header.h";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -512,7 +515,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = WDB6VTXPS7;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U8849KWVAR;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -521,9 +526,10 @@
 				INFOPLIST_FILE = UILibraryDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "capstone-ui-sample";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.capstone-ui-sample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "UILibraryDemo/UILibraryDemo-Bridging-Header.h";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

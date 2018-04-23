@@ -74,11 +74,17 @@
 // DJISDKManagerDelegate
 -(void) appRegisteredWithError:(NSError *_Nullable)error;
 -(void) productConnected:(DJIBaseProduct *_Nullable)product;
-
+-(BOOL) stateChange: (NSString*_Nonnull) newState;
+-(void) disableUserControl;
+-(void) enableUserControl;
+-(void) land;
+-(void) setup;
+- (void) executeVirtualStick : (float) roll : (float) pitch : (float) yaw : (float) throttle;
+-(void) updateJoystick: (int) type;
 
 
 // Must end interface with this
 @end
 
-void sharedDJIData();
+//void sharedDJIData();
 

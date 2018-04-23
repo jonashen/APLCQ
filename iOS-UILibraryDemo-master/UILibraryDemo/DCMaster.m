@@ -78,11 +78,11 @@
 
 -(void) positionCameraDown {
     // radians or degrees?
-    DJIGimbalRotation *rotationAbsolute = [DJIGimbalRotation gimbalRotationWithPitchValue:@(90)
-                                                                                rollValue:nil
-                                                                                 yawValue:nil 
-                                                                                     time:10
-                                                                                     mode:DJIGimbalRotationModeAbsoluteAngle];
+//    DJIGimbalRotation *rotationAbsolute = [DJIGimbalRotation gimbalRotationWithPitchValue:@(90)
+//                                                                                rollValue:nil
+//                                                                                 yawValue:nil 
+//                                                                                     time:10
+//                                                                                     mode:DJIGimbalRotationModeAbsoluteAngle];
     DJIGimbalRotation *rotationSpeed = [DJIGimbalRotation gimbalRotationWithPitchValue:nil
                                                                              rollValue:nil
                                                                               yawValue:nil

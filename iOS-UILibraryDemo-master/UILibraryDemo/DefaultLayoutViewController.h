@@ -10,4 +10,5 @@
 
 @interface DefaultLayoutViewController : DULDefaultLayoutViewController
 
+-(void) displayData: (NSArray*)fcd : (NSArray*)velocities;
 @end

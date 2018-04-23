@@ -40,7 +40,7 @@
     return self;
 }
 
--(BOOL) stateChange: (NSString*)newState{
+-(BOOL) stateChange: (NSString*_Nonnull)newState{
     if([newState isEqualToString:@"FF"]) {
         [self enableUserControl];
     } else if([newState isEqualToString:@"TD"]) {
@@ -71,6 +71,7 @@
 
 -(void) disableUserControl {
     userControl = false;
+    flightController = [self fetchFlightController];
     [flightController setVirtualStickModeEnabled:YES withCompletion:^(NSError * _Nullable error) {
         if (error) {
             NSLog(@"Enable VirtualStickControlMode Failed");
@@ -80,11 +81,16 @@
 
 -(void) enableUserControl {
     userControl = true;
+    flightController = [self fetchFlightController];
     [flightController setVirtualStickModeEnabled:NO withCompletion:^(NSError * _Nullable error) {
         if (error) {
             NSLog(@"Disable VirtualStickControlMode Failed");
         }
     }];
+}
+
+-(bool) isUserControlEnabled {
+    return userControl;
 }
 
 #pragma mark Send Virtual Stick commands
@@ -101,7 +107,7 @@
     ctrlData.roll = mRoll;
     ctrlData.yaw = mYaw;
     ctrlData.verticalThrottle = mThrottle;
-    
+    flightController = [self fetchFlightController];
     flightController.isVirtualStickAdvancedModeEnabled = YES;
     
     if (flightController && flightController.isVirtualStickControlModeAvailable) {
@@ -112,6 +118,7 @@
 }
 
 -(void) land {
+    flightController = [self fetchFlightController];
     [flightController startLandingWithCompletion:^(NSError * _Nullable error) {
         if (error) {
             NSLog(@"Landing error");
@@ -306,25 +313,31 @@
 
 -(void) rotateGimbalUp {
     DJIGimbal *gimbal = [self fetchGimbal];
+//    [gimbal resetWithCompletion:^(NSError * _Nullable error) {
+//        if (error) {
+//            NSLog(@"ResetGimbal Failed: %@", [NSString stringWithFormat:@"%@", error.description]);
+//        }
+//    }];
+//
+//    float rollAngle = 90;
+//
+//    NSNumber *pitchRotation = @(0);
+//    NSNumber *rollRotation = @(rollAngle);
+//    NSNumber *yawRotation = @(0);
+//
+//    DJIGimbalRotation *rotation = [DJIGimbalRotation gimbalRotationWithPitchValue:pitchRotation rollValue:rollRotation                                                        yawValue:yawRotation time:1 mode:DJIGimbalRotationModeAbsoluteAngle];
+//
+//    [gimbal rotateWithRotation:rotation completion:^(NSError * _Nullable error) {
+//        if (error) {
+//            NSLog(@"Rotate Gimbal Failed: %@", [NSString stringWithFormat:@"%@", error.description]);
+//        }
+//    }];
     [gimbal resetWithCompletion:^(NSError * _Nullable error) {
         if (error) {
-            NSLog(@"ResetGimbal Failed: %@", [NSString stringWithFormat:@"%@", error.description]);
+            NSLog(@"Reset Gimbal Failed: %@", [NSString stringWithFormat:@"%@", error.description]);
         }
     }];
-    
-    float rollAngle = 90;
 
-    NSNumber *pitchRotation = @(0);
-    NSNumber *rollRotation = @(rollAngle);
-    NSNumber *yawRotation = @(0);
-    
-    DJIGimbalRotation *rotation = [DJIGimbalRotation gimbalRotationWithPitchValue:pitchRotation rollValue:rollRotation                                                        yawValue:yawRotation time:1 mode:DJIGimbalRotationModeAbsoluteAngle];
-    
-    [gimbal rotateWithRotation:rotation completion:^(NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"Rotate Gimbal Failed: %@", [NSString stringWithFormat:@"%@", error.description]);
-        }
-    }];
 }
 
 //-(void) positionCameraDown {
@@ -355,7 +368,7 @@
 //}
 
 -(void)rotateGimbalDown {
-//    DJIGimbal *gimbal = [self fetchGimbal];
+    DJIGimbal *gimbal = [self fetchGimbal];
     [gimbal resetWithCompletion:^(NSError * _Nullable error) {
         if (error) {
             NSLog(@"ResetGimbal Failed: %@", [NSString stringWithFormat:@"%@", error.description]);
@@ -484,10 +497,10 @@
                     [NSNumber numberWithFloat:state.velocityY],
                     [NSNumber numberWithFloat:state.velocityZ], nil];
     
-//    if(vc != NULL) {
-////        [vc test];
-//        [vc displayData:fcd:vel];
-//    }
+    if(vc != NULL) {
+//        [vc test];
+        [vc displayData:fcd:vel];
+    }
 }
 
 
@@ -538,6 +551,35 @@
     }
 }
 
+
+-(void) updateJoystick:(int)type
+{
+    DJIFlightController *flightController = [self fetchFlightController];
+
+    float mRoll, mPitch, mYaw, mThrottle;
+    if(type == 0) {
+         mRoll = 60, mPitch = 0, mYaw = 0, mThrottle = 0;
+    } else if(type == 1) {
+         mRoll = 0, mPitch = 60, mYaw = 0, mThrottle = 0;
+    } else if(type == 2) {
+         mRoll = 0, mPitch = 0, mYaw = 60, mThrottle = 0;
+    } else {
+         mRoll = 0, mPitch = 0, mYaw = 0, mThrottle = -1;
+    }
+    
+    DJIVirtualStickFlightControlData ctrlData = {0};
+    ctrlData.pitch = mPitch;
+    ctrlData.roll = mRoll;
+    ctrlData.yaw = mYaw;
+    ctrlData.verticalThrottle = mThrottle;
+    if (self->flightController.isVirtualStickControlModeAvailable) {
+        NSLog(@"mThrottle: %f, mYaw: %f", mThrottle, mYaw);
+        [self->flightController sendVirtualStickFlightControlData:ctrlData withCompletion:^(NSError * _Nullable error) {
+            NSLog(@"error:%@",error);
+        }];
+    }
+}
+
 @end
 
 // [_elements addObject:element] = _elements.addObject(element)
@@ -551,20 +593,5 @@
 //    mRoll=[self.txRoll.text floatValue];
 //    mThrottle=[self.txThrot.text floatValue];
 //    [self updateJoystick];
-//}
-
-//-(void) updateJoystick
-//{
-//    DJIVirtualStickFlightControlData ctrlData = {0};
-//    ctrlData.pitch = mPitch;
-//    ctrlData.roll = mRoll;
-//    ctrlData.yaw = mYaw;
-//    ctrlData.verticalThrottle = mThrottle;
-//    if (self.aircraft.flightController.isVirtualStickControlModeAvailable) {
-//        NSLog(@"mThrottle: %f, mYaw: %f", mThrottle, mYaw);
-//        [self.aircraft.flightController sendVirtualStickFlightControlData:ctrlData withCompletion:^(NSError * _Nullable error) {
-//            NSLog(@"error:%@",error);
-//        }];
-//    }
 //}
 
