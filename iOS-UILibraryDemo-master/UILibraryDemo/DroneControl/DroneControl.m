@@ -118,31 +118,31 @@
 }
 
 -(void) land {
-//    flightController = [self fetchFlightController];
-//    [flightController startLandingWithCompletion:^(NSError * _Nullable error) {
-//        if (error) {
-//            NSLog(@"Landing error");
-//        } else {
-//            NSLog(@"Landing complete");
-//        }
-//        [self enableUserControl];
-//    }];
-    DJIFlightController *flightController = [self fetchFlightController];
-    
-    DJIVirtualStickFlightControlData vsFlightCtrlData;
-    vsFlightCtrlData.pitch = 0;
-    vsFlightCtrlData.roll = 0;
-    vsFlightCtrlData.verticalThrottle = -3;
-    
-    flightController.isVirtualStickAdvancedModeEnabled = YES;
-    
-    while(self.aircraftAltitude > 0.3){
-        [flightController sendVirtualStickFlightControlData:vsFlightCtrlData withCompletion:^(NSError * _Nullable error) {
-            if (error) {
-                NSLog(@"Send FlightControl Data Failed %@", error.description);
-            }
-        }]; 
-    }
+    flightController = [self fetchFlightController];
+    [flightController startLandingWithCompletion:^(NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Landing error");
+        } else {
+            NSLog(@"Landing complete");
+        }
+        [self enableUserControl];
+    }];
+//    DJIFlightController *flightController = [self fetchFlightController];
+//
+//    DJIVirtualStickFlightControlData vsFlightCtrlData;
+//    vsFlightCtrlData.pitch = 0;
+//    vsFlightCtrlData.roll = 0;
+//    vsFlightCtrlData.verticalThrottle = -3;
+//
+//    flightController.isVirtualStickAdvancedModeEnabled = YES;
+//
+//    while(self.aircraftAltitude > 0.3){
+//        [flightController sendVirtualStickFlightControlData:vsFlightCtrlData withCompletion:^(NSError * _Nullable error) {
+//            if (error) {
+//                NSLog(@"Send FlightControl Data Failed %@", error.description);
+//            }
+//        }];
+//    }
 }
 
 #pragma mark - FCD methods
