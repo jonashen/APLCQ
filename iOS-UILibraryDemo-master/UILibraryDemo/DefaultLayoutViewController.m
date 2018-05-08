@@ -27,6 +27,9 @@ static DroneControl * droneControl;
 //    [DJISDKManager registerAppWithDelegate:self];
     droneControl = [[DroneControl alloc] init];
     droneControl->vc = self;
+    //initialize offset value to 10 at beginning
+    self.offset = 10;
+    NSLog(@"Offset at start: %d", self.offset);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -123,7 +126,7 @@ static DroneControl * droneControl;
 }
 
 - (IBAction)autoLand:(id)sender {
-    [droneControl autoLand:10];
+    [droneControl autoLand:self.offset];//modify variable here
 }
 
 - (IBAction)disable:(id)sender {
@@ -138,4 +141,10 @@ static DroneControl * droneControl;
     _dataTextView.text = @"Working";
 }
 
+- (IBAction)offsetStepperClicked:(id)sender {
+    //both label value and the offset variable changed here
+    self.offsetLabel.text = [NSString stringWithFormat:@"%0.0f", _offsetStepper.value];
+    self.offset = _offsetStepper.value;
+    NSLog(@"Offset: %d", self.offset);
+}
 @end

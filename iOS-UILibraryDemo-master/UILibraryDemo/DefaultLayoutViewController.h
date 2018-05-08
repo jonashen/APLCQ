@@ -13,4 +13,8 @@
 -(void) displayData: (NSArray*)fcd : (NSArray*)velocities;
 -(void) test;
 - (void)showAlertViewWithMessage:(NSString *)message;
+@property (weak, nonatomic) IBOutlet UILabel *offsetLabel;
+@property (weak, nonatomic) IBOutlet UIStepper *offsetStepper;
+- (IBAction)offsetStepperClicked:(id)sender;
+@property int offset;
 @end

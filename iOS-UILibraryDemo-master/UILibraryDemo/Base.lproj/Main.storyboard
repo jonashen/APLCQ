@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JhJ-IO-CjI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JhJ-IO-CjI">
     <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -88,10 +88,25 @@
                                     <action selector="autoLand:" destination="JhJ-IO-CjI" eventType="touchUpInside" id="fqQ-7a-tIW"/>
                                 </connections>
                             </button>
+                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" maximumValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="qym-pS-zWg">
+                                <rect key="frame" x="20" y="50" width="94" height="29"/>
+                                <color key="tintColor" red="0.0" green="0.83529411760000005" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="offsetStepperClicked:" destination="JhJ-IO-CjI" eventType="valueChanged" id="ZF8-XV-QbF"/>
+                                </connections>
+                            </stepper>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nDr-Xi-wKc">
+                                <rect key="frame" x="134" y="54.5" width="18" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.48247197069999997" green="1" blue="0.9673370282" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="KH7-29-8f2" secondAttribute="trailing" constant="40" id="2sR-pB-LNU"/>
+                            <constraint firstItem="nDr-Xi-wKc" firstAttribute="leading" secondItem="qym-pS-zWg" secondAttribute="trailing" constant="20" id="45C-oB-lF1"/>
+                            <constraint firstItem="nDr-Xi-wKc" firstAttribute="centerY" secondItem="qym-pS-zWg" secondAttribute="centerY" id="8BB-u7-tQt"/>
                             <constraint firstItem="PmT-bz-qLc" firstAttribute="centerX" secondItem="hah-kK-YdD" secondAttribute="centerX" id="GIS-Ne-zRo"/>
                             <constraint firstItem="PmT-bz-qLc" firstAttribute="leading" secondItem="hah-kK-YdD" secondAttribute="leadingMargin" constant="40" id="Mj5-Dl-XO0"/>
                             <constraint firstItem="KH7-29-8f2" firstAttribute="leading" secondItem="hah-kK-YdD" secondAttribute="leadingMargin" constant="40" id="OsH-aX-UMb"/>
@@ -101,15 +116,19 @@
                             <constraint firstItem="dQW-tq-eU7" firstAttribute="leading" secondItem="FHd-3p-Sey" secondAttribute="leading" id="Vey-EA-L86"/>
                             <constraint firstItem="d4f-nt-ib4" firstAttribute="leading" secondItem="kWc-he-e3V" secondAttribute="trailing" constant="8" id="ZB8-Tm-k6P"/>
                             <constraint firstItem="kWc-he-e3V" firstAttribute="baseline" secondItem="d4f-nt-ib4" secondAttribute="baseline" id="ZBc-AG-761"/>
+                            <constraint firstItem="qym-pS-zWg" firstAttribute="leading" secondItem="hah-kK-YdD" secondAttribute="leadingMargin" id="a0g-UT-ZFV"/>
                             <constraint firstItem="PmT-bz-qLc" firstAttribute="top" secondItem="KH7-29-8f2" secondAttribute="bottom" constant="8" id="fGn-si-cEz"/>
                             <constraint firstItem="m3d-cu-DiW" firstAttribute="top" secondItem="FHd-3p-Sey" secondAttribute="bottom" constant="32" id="hFr-oB-HRj"/>
                             <constraint firstAttribute="bottom" secondItem="d4f-nt-ib4" secondAttribute="bottom" constant="32" id="nBV-82-eis"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PmT-bz-qLc" secondAttribute="trailing" constant="40" id="nDX-yl-d0V"/>
+                            <constraint firstItem="qym-pS-zWg" firstAttribute="top" secondItem="MV4-m5-haC" secondAttribute="bottom" constant="50" id="pUY-07-wXK"/>
                             <constraint firstItem="kWc-he-e3V" firstAttribute="leading" secondItem="FHd-3p-Sey" secondAttribute="trailing" constant="8" symbolic="YES" id="s7T-iA-1K2"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="dataTextView" destination="PmT-bz-qLc" id="JN0-5p-3hO"/>
+                        <outlet property="offsetLabel" destination="nDr-Xi-wKc" id="jES-UJ-Crh"/>
+                        <outlet property="offsetStepper" destination="qym-pS-zWg" id="F0F-6a-mLR"/>
                         <outlet property="t2" destination="KH7-29-8f2" id="qXk-k3-BZd"/>
                     </connections>
                 </viewController>
