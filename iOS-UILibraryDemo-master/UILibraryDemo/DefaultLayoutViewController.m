@@ -119,7 +119,10 @@ static DroneControl * droneControl;
 }
 
 - (IBAction)land:(id)sender {
-//    [droneControl land];
+    [droneControl land];
+}
+
+- (IBAction)autoLand:(id)sender {
     [droneControl autoLand:10];
 }
 
