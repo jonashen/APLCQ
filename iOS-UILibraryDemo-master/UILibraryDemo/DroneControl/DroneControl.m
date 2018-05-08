@@ -658,8 +658,9 @@
     }
     
     [self updateJoystick:1]; // Pitch forward by 3 units
-    
+    [self rotateGimbalUp];
     [self land];
+    [self enableUserControl];
 }
 
 @end
