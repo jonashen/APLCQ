@@ -82,6 +82,7 @@
 - (void) executeVirtualStick : (float) roll : (float) pitch : (float) yaw : (float) throttle;
 -(void) updateJoystick: (int) type;
 -(void) moveDroneWithOffset:(float) offset;
+-(void) autoLand:(float) offset;
 
 // Must end interface with this
 @end

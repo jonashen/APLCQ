@@ -496,9 +496,8 @@
                     [NSNumber numberWithFloat:state.velocityX],
                     [NSNumber numberWithFloat:state.velocityY],
                     [NSNumber numberWithFloat:state.velocityZ], nil];
-    
+
     if(vc != NULL) {
-//        [vc test];
         [vc displayData:fcd:vel];
     }
 }
@@ -518,7 +517,7 @@
 //        [[DJISDKManager videoFeeder].primaryVideoFeed addListener:self withQueue:nil];
 //        [[VideoPreviewer instance] start];
     }
-//    [vc showAlertViewWithMessage:message];
+    [vc showAlertViewWithMessage:message];
 //    [self showAlertViewWithTitle:@"Register App" withMessage:message];
     
 }
@@ -529,6 +528,7 @@
 //        if(vc != NULL) {
 //            [vc test];
 //        }
+        [vc test];
         camera = [self fetchCamera];
         if (camera != nil) {
             camera.delegate = self;
@@ -564,7 +564,7 @@
     } else if(type == 2) {
          mRoll = 0, mPitch = 0, mYaw = 60, mThrottle = 0;
     } else {
-         mRoll = 0, mPitch = 0, mYaw = 0, mThrottle = -1;
+         mRoll = 0, mPitch = 0, mYaw = 0, mThrottle = 1;
     }
     
     DJIVirtualStickFlightControlData ctrlData = {0};
@@ -595,6 +595,33 @@
         if (error) {
             NSLog(@"Send FlightControl Data Failed %@", error.description);
         }
+    }];
+}
+
+-(void) autoLand:(float) offset {
+    [self disableUserControl];
+//    [self land];
+    flightController = [self fetchFlightController];
+    [flightController startLandingWithCompletion:^(NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Landing error");
+        }
+        
+        else {
+            // Start landing until 0.3 meters
+            while(self.aircraftAltitude != 0.3) {}
+            [flightController cancelLandingWithCompletion:^(NSError * _Nullable error) {
+                if(error) {
+                    NSLog(@"Cancel landing error");
+                } else {
+                    NSLog(@"Landing cancelled");
+                }
+            }];
+//            [self updateJoystick:3];
+            [self moveDroneWithOffset:offset];
+            [self land];
+        }
+        [self enableUserControl];
     }];
 }
 

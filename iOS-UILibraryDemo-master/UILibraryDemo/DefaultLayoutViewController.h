@@ -11,4 +11,6 @@
 @interface DefaultLayoutViewController : DULDefaultLayoutViewController
 
 -(void) displayData: (NSArray*)fcd : (NSArray*)velocities;
+-(void) test;
+- (void)showAlertViewWithMessage:(NSString *)message;
 @end

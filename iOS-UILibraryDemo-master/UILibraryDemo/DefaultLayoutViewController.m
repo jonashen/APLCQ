@@ -9,7 +9,8 @@
 #import "DroneControl.h"
 #import "DefaultLayoutViewController.h"
 
-@interface DefaultLayoutViewController ()<DJISDKManagerDelegate>
+//@interface DefaultLayoutViewController ()<DJISDKManagerDelegate>
+@interface DefaultLayoutViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *dataTextView;
 @property (weak, nonatomic) IBOutlet UITextView *t2;
 
@@ -23,7 +24,7 @@ static DroneControl * droneControl;
 {
     [super viewDidLoad];
     
-    [DJISDKManager registerAppWithDelegate:self];
+//    [DJISDKManager registerAppWithDelegate:self];
     droneControl = [[DroneControl alloc] init];
     droneControl->vc = self;
 }
@@ -31,13 +32,13 @@ static DroneControl * droneControl;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self registerApp];
+//    [self registerApp];
 }
 
-- (void)registerApp
-{
-    [DJISDKManager registerAppWithDelegate:self];
-}
+//- (void)registerApp
+//{
+//    [DJISDKManager registerAppWithDelegate:self];
+//}
 
 - (void)showAlertViewWithMessage:(NSString *)message
 {
@@ -48,20 +49,19 @@ static DroneControl * droneControl;
         UIViewController *rootViewController = [[UIApplication sharedApplication] keyWindow].rootViewController;
         [rootViewController presentViewController:alertViewController animated:YES completion:nil];
     });
-
 }
 
 #pragma mark DJISDKManager Delegate Methods
-- (void)appRegisteredWithError:(NSError *)error
-{
-    if (!error) {
-        [self showAlertViewWithMessage:@"Registration Success"];
-        [DJISDKManager startConnectionToProduct];
-    }else
-    {
-        [self showAlertViewWithMessage:[NSString stringWithFormat:@"Registration Error:%@", error]];
-    }
-}
+//- (void)appRegisteredWithError:(NSError *)error
+//{
+//    if (!error) {
+//        [self showAlertViewWithMessage:@"Registration Success"];
+//        [DJISDKManager startConnectionToProduct];
+//    }else
+//    {
+//        [self showAlertViewWithMessage:[NSString stringWithFormat:@"Registration Error:%@", error]];
+//    }
+//}
 
 - (void)showAlertViewWithTitle:(NSString *)title withMessage:(NSString *)message
 {
@@ -70,17 +70,17 @@ static DroneControl * droneControl;
     [alert addAction:okAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
-
-- (void)productConnected:(DJIBaseProduct *)product
-{
-    
-    //If this demo is used in China, it's required to login to your DJI account to activate the application. Also you need to use DJI Go app to bind the aircraft to your DJI account. For more details, please check this demo's tutorial.
-    [[DJISDKManager userAccountManager] logIntoDJIUserAccountWithAuthorizationRequired:NO withCompletion:^(DJIUserAccountState state, NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"Login failed: %@", error.description);
-        }
-    }];
-}
+//
+//- (void)productConnected:(DJIBaseProduct *)product
+//{
+//
+//    //If this demo is used in China, it's required to login to your DJI account to activate the application. Also you need to use DJI Go app to bind the aircraft to your DJI account. For more details, please check this demo's tutorial.
+//    [[DJISDKManager userAccountManager] logIntoDJIUserAccountWithAuthorizationRequired:NO withCompletion:^(DJIUserAccountState state, NSError * _Nullable error) {
+//        if (error) {
+//            NSLog(@"Login failed: %@", error.description);
+//        }
+//    }];
+//}
 
 -(BOOL) changeState:(NSString*) newState  {
     return [droneControl stateChange:newState];
@@ -119,7 +119,8 @@ static DroneControl * droneControl;
 }
 
 - (IBAction)land:(id)sender {
-    [droneControl land];
+//    [droneControl land];
+    [droneControl autoLand:10];
 }
 
 - (IBAction)disable:(id)sender {
@@ -131,7 +132,7 @@ static DroneControl * droneControl;
 }
 
 -(void) test {
-    _t2.text = @"Working";
+    _dataTextView.text = @"Working";
 }
 
 @end
