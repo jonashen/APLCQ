@@ -576,7 +576,7 @@
     if(type == 0) {
          mRoll = 60, mPitch = 0, mYaw = 0, mThrottle = 0;
     } else if(type == 1) {
-         mRoll = 0, mPitch = 60, mYaw = 0, mThrottle = 0;
+         mRoll = 0, mPitch = 3, mYaw = 0, mThrottle = 0;
     } else if(type == 2) {
          mRoll = 0, mPitch = 0, mYaw = 60, mThrottle = 0;
     } else {
@@ -615,30 +615,51 @@
 }
 
 -(void) autoLand:(float) offset {
-    [self disableUserControl];
-//    [self land];
-    flightController = [self fetchFlightController];
-    [flightController startLandingWithCompletion:^(NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"Landing error");
-        }
-        
-        else {
-            // Start landing until 0.3 meters
-            while(self.aircraftAltitude != 0.3) {}
-            [flightController cancelLandingWithCompletion:^(NSError * _Nullable error) {
-                if(error) {
-                    NSLog(@"Cancel landing error");
-                } else {
-                    NSLog(@"Landing cancelled");
-                }
-            }];
-//            [self updateJoystick:3];
-            [self moveDroneWithOffset:offset];
-            [self land];
-        }
-        [self enableUserControl];
-    }];
+//    [self disableUserControl];
+////    [self land];
+//    flightController = [self fetchFlightController];
+//    [flightController startLandingWithCompletion:^(NSError * _Nullable error) {
+//        if (error) {
+//            NSLog(@"Landing error");
+//        }
+//
+//        else {
+//            // Start landing until 0.3 meters
+//            while(self.aircraftAltitude != 0.3) {}
+//            [flightController cancelLandingWithCompletion:^(NSError * _Nullable error) {
+//                if(error) {
+//                    NSLog(@"Cancel landing error");
+//                } else {
+//                    NSLog(@"Landing cancelled");
+//                }
+//            }];
+////            [self updateJoystick:3];
+//            [self moveDroneWithOffset:offset];
+//            [self land];
+//        }
+//        [self enableUserControl];
+//    }];
+    
+    DJIFlightController *flightController = [self fetchFlightController];
+    
+    DJIVirtualStickFlightControlData vsFlightCtrlData;
+    vsFlightCtrlData.pitch = 0;
+    vsFlightCtrlData.roll = 0;
+    vsFlightCtrlData.verticalThrottle = -5;
+    
+    flightController.isVirtualStickAdvancedModeEnabled = YES;
+    
+    while(self.aircraftAltitude > 0.3){
+        [flightController sendVirtualStickFlightControlData:vsFlightCtrlData withCompletion:^(NSError * _Nullable error) {
+            if (error) {
+                NSLog(@"Send FlightControl Data Failed %@", error.description);
+            }
+        }];
+    }
+    
+    [self updateJoystick:1]; // Pitch forward by 3 units
+    
+    [self land];
 }
 
 @end
